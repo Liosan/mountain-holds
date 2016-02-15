@@ -7,3 +7,8 @@ void Logger::LogInfo(const std::string& text)
 {
 	std::cout << text << std::endl;
 }
+
+void Logger::LogError(const std::string& text)
+{
+	std::cout << text << std::endl;
+}

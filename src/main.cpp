@@ -22,17 +22,26 @@ using mh::foundation::Logger;
 
 int main(int argc, char* argv[]) 
 {
-	sf::Window App(sf::VideoMode(800, 600), "Mountainhomes");
-	Logger::LogInfo("MH initialized");
+	sf::Window app(sf::VideoMode(800, 600), "Mountainhomes");
 	Logger::LogInfo("This program comes with ABSOLUTELY NO WARRANTY; see http://www.gnu.org/licenses/gpl-3.0.en.html for details.");
 	Logger::LogInfo("This is free software, and you are welcome to redistribute it under certain conditions.");
 
-	while (App.isOpen()) {
-		sf::Event Event;
-		while (App.pollEvent(Event)) {
-			if (Event.type == sf::Event::Closed)
-				App.close();
+	if (argc < 2)
+	{
+		Logger::LogError(
+			std::string("Not enough arguments supplied. Usage: ") + argv[0] + " <path to data folder>"
+		);
+		return 1;
+	}
+	const std::string dataFolder = argv[1];
+	Logger::LogInfo("MH initialized. Data folder: " + dataFolder);
+
+	while (app.isOpen()) {
+		sf::Event event;
+		while (app.pollEvent(event)) {
+			if (event.type == sf::Event::Closed)
+				app.close();
 		}
-		App.display();
+		app.display();
 	}
 }
