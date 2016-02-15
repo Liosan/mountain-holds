@@ -24,6 +24,8 @@ int main(int argc, char* argv[])
 {
 	sf::Window App(sf::VideoMode(800, 600), "Mountainhomes");
 	Logger::LogInfo("MH initialized");
+	Logger::LogInfo("This program comes with ABSOLUTELY NO WARRANTY; see http://www.gnu.org/licenses/gpl-3.0.en.html for details.");
+	Logger::LogInfo("This is free software, and you are welcome to redistribute it under certain conditions.");
 
 	while (App.isOpen()) {
 		sf::Event Event;
