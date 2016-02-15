@@ -1,11 +1,13 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
-using namespace std;
+
+#include "Logger.h"
+using mh::foundation::Logger;
 
 int main(int argc, char* argv[]) 
 {
-
 	sf::Window App(sf::VideoMode(800, 600), "Mountainhomes");
+	Logger::LogInfo("MH initialized");
 
 	while (App.isOpen()) {
 		sf::Event Event;
