@@ -19,6 +19,21 @@
 
 #include "Logger.h"
 using mh::foundation::Logger;
+#include "TileType.h"
+using mh::map::TileTypeDictionary;
+
+
+namespace
+{
+
+	void initialize(const std::string& dataFolder)
+	{
+		// TODO should be per-library initialization functions
+		TileTypeDictionary::Initialize();
+		TileTypeDictionary::Instance();
+	}
+
+}
 
 int main(int argc, char* argv[]) 
 {
@@ -34,6 +49,7 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 	const std::string dataFolder = argv[1];
+	initialize(dataFolder);
 	Logger::LogInfo("MH initialized. Data folder: " + dataFolder);
 
 	while (app.isOpen()) {
