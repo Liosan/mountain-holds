@@ -10,6 +10,11 @@ add_library (
 	${PRIVATE_FILES}
 )
 
+include_directories("include")
+
+target_link_libraries(${PROJECT_NAME} foundation)
+include_directories(${MH_foundation_INCLUDES})
+
 set_target_properties(${PROJECT_NAME} PROPERTIES
 	LINKER_LANGUAGE CXX
 )

@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.2)
 project(foundation)
+set(MH_foundation_INCLUDES "${CMAKE_CURRENT_SOURCE_DIR}/include" PARENT_SCOPE)
 
 FILE(GLOB PUBLIC_FILES include/*.h include/*.hpp)
 FILE(GLOB PRIVATE_FILES src/*.h src/*.hpp src/*.cpp)
