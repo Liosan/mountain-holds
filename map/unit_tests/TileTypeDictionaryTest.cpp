@@ -28,19 +28,19 @@ namespace mh
 				}
 			};
 
-			TEST_F(TileTypeDictionaryTest, Empty)
+			TEST_F(TileTypeDictionaryTest, Empty_ShouldHaveZeroElements)
 			{
 				EXPECT_EQ(0, TileTypeDictionary::Instance().size());
 			}
 
-			TEST_F(TileTypeDictionaryTest, SingleTile)
+			TEST_F(TileTypeDictionaryTest, SingleTileAdded_ShouldHaveOneElement)
 			{
 				TileTypeDictionary::Instance().add(ResourceId("foo.png"));
 				ASSERT_EQ(1, TileTypeDictionary::Instance().size());
 				EXPECT_EQ(ResourceId("foo.png"), TileTypeDictionary::Instance().get(0).resource());
 			}
 
-			TEST_F(TileTypeDictionaryTest, ManyTiles)
+			TEST_F(TileTypeDictionaryTest, ManyTilesAdded_ShouldHaveAllElements)
 			{
 				const auto& t1 = TileTypeDictionary::Instance().add(ResourceId("foo.png"));
 				EXPECT_EQ(0, t1.id());
