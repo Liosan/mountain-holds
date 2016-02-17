@@ -19,6 +19,8 @@
 
 #include "Logger.h"
 using mh::foundation::Logger;
+#include "ResourceId.h"
+using mh::foundation::ResourceId;
 #include "TileType.h"
 using mh::map::TileTypeDictionary;
 
@@ -30,7 +32,8 @@ namespace
 	{
 		// TODO should be per-library initialization functions
 		TileTypeDictionary::Initialize();
-		TileTypeDictionary::Instance();
+		TileTypeDictionary::Instance().add(ResourceId("foo.png"));
+		MH_ASSERT(TileTypeDictionary::Instance().get(0).resource() == ResourceId("foo.png"), "Wrong resource?");
 	}
 
 }
