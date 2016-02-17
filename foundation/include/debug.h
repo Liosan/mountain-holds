@@ -8,19 +8,19 @@
 #if defined(_WIN32) 
 #define _HANDLE_MH_ASSERT_FAILURE(conditionMessage, message) \
 	{ \
-		if (mh::debug::IsWindowsDebuggerPresent()) \
+		if (mh::foundation::debug::IsWindowsDebuggerPresent()) \
 		{ \
 			__debugbreak(); \
 		} \
 		else \
 		{ \
-			mh::debug::ShowAssertionWindow(__FILE__, __LINE__, conditionMessage, message); \
+			mh::foundation::debug::ShowAssertionWindow(__FILE__, __LINE__, conditionMessage, message); \
 		} \
 	}
 #elif __APPLE__	
 #define _HANDLE_MH_ASSERT_FAILURE(conditionMessage, message) \
 	{ \
-		mh::debug::ShowAssertionWindow(__FILE__, __LINE__, conditionMessage, message); \
+		mh::foundation::debug::ShowAssertionWindow(__FILE__, __LINE__, conditionMessage, message); \
 		__asm__	("int $3"); \
 	}
 #else
@@ -35,7 +35,7 @@
 	{	\
 		if ((condition) == false) \
 		{ \
-			std::lock_guard<std::mutex> _lck_(mh::debug::assertionMutex); \
+			std::lock_guard<std::mutex> _lck_(mh::foundation::debug::assertionMutex); \
 			_HANDLE_MH_ASSERT_FAILURE(#condition, message); \
 		} \
 	}; (false)
@@ -48,16 +48,19 @@
 
 namespace mh
 {
-	namespace debug
+	namespace foundation
 	{
-		void MH_FOUNDATION_EXPORT ShowAssertionWindow(
-			const char* file, 
-			const int line, 
-			const char* conditionMessage, 
-			const char* message
-		);
-		bool MH_FOUNDATION_EXPORT IsWindowsDebuggerPresent();
+		namespace debug
+		{
+			void MH_FOUNDATION_EXPORT ShowAssertionWindow(
+				const char* file,
+				const int line,
+				const char* conditionMessage,
+				const char* message
+			);
+			bool MH_FOUNDATION_EXPORT IsWindowsDebuggerPresent();
 
-		extern std::mutex MH_FOUNDATION_EXPORT assertionMutex;
+			extern std::mutex MH_FOUNDATION_EXPORT assertionMutex;
+		}
 	}
 }

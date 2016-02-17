@@ -6,9 +6,9 @@
 #include <windows.h>
 #endif
 
-std::mutex mh::debug::assertionMutex;
+std::mutex mh::foundation::debug::assertionMutex;
 
-void mh::debug::ShowAssertionWindow(const char* file, const int line, const char* conditionMessage, const char* message)
+void mh::foundation::debug::ShowAssertionWindow(const char* file, const int line, const char* conditionMessage, const char* message)
 {
 	std::ostringstream oss;
 	oss << "Debug Assertion '" << conditionMessage << "' Failed\nFile: " << file << "\nLine: " << line << "\n" << message;
@@ -36,7 +36,7 @@ void mh::debug::ShowAssertionWindow(const char* file, const int line, const char
 #endif
 }
 
-bool mh::debug::IsWindowsDebuggerPresent()
+bool mh::foundation::debug::IsWindowsDebuggerPresent()
 {
 #ifdef _WIN32
 	return IsDebuggerPresent() == TRUE;

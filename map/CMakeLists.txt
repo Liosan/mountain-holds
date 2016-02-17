@@ -19,4 +19,4 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 	LINKER_LANGUAGE CXX
 )
 
-#add_subdirectory(unit_tests)
+add_subdirectory(unit_tests)

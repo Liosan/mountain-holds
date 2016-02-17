@@ -34,7 +34,8 @@ namespace mh
 			friend class foundation::Singleton<TileTypeDictionary>;
 		public:
 			const TileType& add(const foundation::ResourceId& resource);
-			const TileType& get(const TileTypeId& id);
+			const TileType& get(const TileTypeId& id) const;
+			std::uint16_t size() const;
 		private:
 			TileTypeDictionary();
 

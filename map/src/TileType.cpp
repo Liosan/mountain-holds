@@ -33,8 +33,13 @@ const TileType& TileTypeDictionary::add(const ResourceId& resource)
 	return this->tileTypes_.back();
 }
 
-const TileType& TileTypeDictionary::get(const TileTypeId& id)
+const TileType& TileTypeDictionary::get(const TileTypeId& id) const
 {
 	MH_ASSERT(id < this->tileTypes_.size(), "id supplied is out of range");
 	return this->tileTypes_[id];
+}
+
+std::uint16_t TileTypeDictionary::size() const
+{
+	return static_cast<std::uint16_t>(this->tileTypes_.size());
 }

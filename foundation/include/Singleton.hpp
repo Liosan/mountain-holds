@@ -21,40 +21,47 @@ namespace mh
 
 			static Contained& Instance()
 			{
-				auto& instance = Singleton<Contained>::InstanceImpl();
-				if (!instance.singletonInitializeCalled_)
+				auto& instance = Singleton<Contained>::InstancePtr();
+				if (!instance)
 				{
 					MH_ASSERT(false, "Illegal call to Instance() before Initialize()");
 					throw std::logic_error("Illegal call to Instance() before Initialize()");
 				}
-				return instance;
+				return *instance;
 			}
 
 			static void Initialize()
 			{
-				auto& instance = Singleton<Contained>::InstanceImpl();
-				if (instance.singletonInitializeCalled_)
+				auto& instance = Singleton<Contained>::InstancePtr();
+				if (instance)
 				{
 					MH_ASSERT(false, "Illegal double call to Initialize()");
 					throw std::logic_error("Illegal double call to Initialize()");
 				}
-				instance.singletonInitializeCalled_ = true;
+				instance.reset(new Contained());
+			}
+
+			static void Destroy()
+			{
+				auto& instance = Singleton<Contained>::InstancePtr();
+				if (!instance)
+				{
+					MH_ASSERT(false, "Illegal call to Destroy() on uninitialized singleton");
+					throw std::logic_error("Illegal call to Destroy() on uninitialized singleton");
+				}
+				instance.reset(nullptr);
 			}
 		protected:
-			Singleton() :
-				singletonInitializeCalled_(false)
+			Singleton()
 			{}
-
 			virtual ~Singleton()
 			{}
 		private:
-			static Contained& InstanceImpl()
+			static std::unique_ptr<Contained>& InstancePtr()
 			{
-				static Contained instance;
+				static std::unique_ptr<Contained> instance;
 				return instance;
 			}
-
-			bool singletonInitializeCalled_;
 		};
 	}
 }
