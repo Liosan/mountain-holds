@@ -2,12 +2,12 @@
 using mh::map::Map;
 using mh::map::TileTypeId;
 using mh::map::TileType;
-using sf::Vector3i;
+using mh::map::MapCoords;
 #include "TileTypeDictionary.h"
 using mh::map::TileTypeDictionary;
 #include "foundation/debug.h"
 
-Map::Map(const sf::Vector3i& size, const TileTypeId& initialTileType) :
+Map::Map(const MapCoords& size, const TileTypeId& initialTileType) :
 	size_(size)
 {
 	this->tiles_.resize(size.x);
@@ -19,7 +19,7 @@ Map::Map(const sf::Vector3i& size, const TileTypeId& initialTileType) :
 	}
 }
 
-const TileType& Map::typeAt(const sf::Vector3i& point) const
+const TileType& Map::typeAt(const MapCoords& point) const
 {
 	MH_ASSERT(
 		(point.x < this->size_.x) && (point.y < this->size_.y) && (point.z < this->size_.z),
@@ -28,7 +28,7 @@ const TileType& Map::typeAt(const sf::Vector3i& point) const
 	return TileTypeDictionary::Instance().get(this->tiles_[point.x][point.y][point.z]);
 }
 
-void Map::set(const sf::Vector3i& point, const TileTypeId& tileTypeId)
+void Map::set(const MapCoords& point, const TileTypeId& tileTypeId)
 {
 	MH_ASSERT(
 		(point.x < this->size_.x) && (point.y < this->size_.y) && (point.z < this->size_.z),
@@ -37,7 +37,7 @@ void Map::set(const sf::Vector3i& point, const TileTypeId& tileTypeId)
 	this->tiles_[point.x][point.y][point.z] = tileTypeId;
 }
 
-const sf::Vector3i& Map::size() const
+const MapCoords& Map::size() const
 {
 	return this->size_;
 }

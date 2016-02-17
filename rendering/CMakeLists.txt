@@ -15,6 +15,8 @@ include_directories("include/rendering")
 
 target_link_libraries(${PROJECT_NAME} foundation)
 include_directories(${MH_foundation_INCLUDES})
+target_link_libraries(${PROJECT_NAME} map)
+include_directories(${MH_map_INCLUDES})
 
 target_link_libraries(
 	${PROJECT_NAME}

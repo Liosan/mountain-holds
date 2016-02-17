@@ -16,6 +16,8 @@ namespace
 		}
 		else
 		{
+			texture->setRepeated(false);
+			texture->setSmooth(true);
 			Logger::LogInfo("Loaded texture " + path);
 			return texture;
 		}

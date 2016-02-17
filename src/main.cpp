@@ -23,8 +23,13 @@ using mh::foundation::Logger;
 using mh::foundation::ResourceId;
 #include "map/TileTypeDictionary.h"
 using mh::map::TileTypeDictionary;
+#include "map/Map.h"
+using mh::map::Map;
+using mh::map::MapCoords;
 #include "rendering/TextureManager.h"
 using mh::rendering::TextureManager;
+#include "rendering/Renderer.h"
+using mh::rendering::Renderer;
 
 namespace
 {
@@ -45,7 +50,7 @@ namespace
 
 int main(int argc, char* argv[]) 
 {
-	sf::Window app(sf::VideoMode(800, 600), "Mountainhomes");
+	sf::RenderWindow app(sf::VideoMode(800, 600), "Mountainhomes");
 	Logger::LogInfo("This program comes with ABSOLUTELY NO WARRANTY; see http://www.gnu.org/licenses/gpl-3.0.en.html for details.");
 	Logger::LogInfo("This is free software, and you are welcome to redistribute it under certain conditions.");
 
@@ -60,12 +65,19 @@ int main(int argc, char* argv[])
 	initialize(dataFolder);
 	Logger::LogInfo("MH initialized");
 
+	Map map(MapCoords(10, 10, 10), 0);
+	map.set(MapCoords(3, 3, 5), 1);
+	Renderer renderer;
+
 	while (app.isOpen()) {
 		sf::Event event;
-		while (app.pollEvent(event)) {
+		while (app.pollEvent(event))
+		{
 			if (event.type == sf::Event::Closed)
 				app.close();
 		}
+		app.clear();
+		renderer.renderMap(app, map, MapCoords(5, 5, 5));
 		app.display();
 	}
 }

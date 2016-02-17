@@ -12,16 +12,24 @@ namespace mh
 {
 	namespace map
 	{
+		class MapCoords : public sf::Vector3<std::uint32_t>
+		{
+		public:
+			MapCoords(const std::uint32_t x, const std::uint32_t y, const std::uint32_t z) :
+				sf::Vector3<std::uint32_t>(x, y, z)
+			{}
+		};
+
 		class MH_MAP_EXPORT Map
 		{
 		public:
-			Map(const sf::Vector3i& size, const TileTypeId& initialTileType);
+			Map(const MapCoords& size, const TileTypeId& initialTileType);
 			
-			const TileType& typeAt(const sf::Vector3i& point) const;
-			void set(const sf::Vector3i& point, const TileTypeId& tileTypeId);
-			const sf::Vector3i& size() const;
+			const TileType& typeAt(const MapCoords& point) const;
+			void set(const MapCoords& point, const TileTypeId& tileTypeId);
+			const MapCoords& size() const;
 		private:
-			const sf::Vector3i size_;
+			const MapCoords size_;
 			std::vector<std::vector<std::vector<TileTypeId>>> tiles_;
 		};
 	}
