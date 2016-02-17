@@ -25,6 +25,7 @@ namespace mh
 		public:
 			Map(const MapCoords& size, const TileTypeId& initialTileType);
 			
+			const TileTypeId& typeIdAt(const MapCoords& point) const;
 			const TileType& typeAt(const MapCoords& point) const;
 			void set(const MapCoords& point, const TileTypeId& tileTypeId);
 			const MapCoords& size() const;

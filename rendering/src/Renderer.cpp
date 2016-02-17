@@ -12,23 +12,22 @@ using mh::map::MapCoords;
 #include "map/TileType.h"
 using mh::map::TileType;
 
-namespace
-{
-	
-}
-
 void Renderer::renderMap(sf::RenderWindow& window, const Map& map, const MapCoords& center)
 {
 	for (std::uint32_t x = 0; x < map.size().x; ++x)
+	{
 		for (std::uint32_t y = 0; y < map.size().y; ++y)
 		{
 			const auto& tileType = map.typeAt(MapCoords(x, y, center.z));
 			const auto& texture = TextureManager::Instance().getTexture(tileType.resource());
 			sf::Sprite sprite(texture);
+			const std::int32_t offsetX = static_cast<std::int32_t>(x) - static_cast<std::int32_t>(center.x);
+			const std::int32_t offsetY = static_cast<std::int32_t>(y) - static_cast<std::int32_t>(center.y);
 			sprite.setPosition(
-				x * sprite.getLocalBounds().width,
-				y * sprite.getLocalBounds().height
+				offsetX * sprite.getLocalBounds().width + window.getSize().x / 2,
+				offsetY * sprite.getLocalBounds().height + window.getSize().y / 2
 			);
 			window.draw(sprite);
 		}
+	}
 }

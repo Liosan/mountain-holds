@@ -19,13 +19,22 @@ Map::Map(const MapCoords& size, const TileTypeId& initialTileType) :
 	}
 }
 
+const TileTypeId& Map::typeIdAt(const MapCoords& point) const
+{
+	MH_ASSERT(
+		(point.x < this->size_.x) && (point.y < this->size_.y) && (point.z < this->size_.z),
+		"Point out of range"
+	);
+	return this->tiles_[point.x][point.y][point.z];
+}
+
 const TileType& Map::typeAt(const MapCoords& point) const
 {
 	MH_ASSERT(
 		(point.x < this->size_.x) && (point.y < this->size_.y) && (point.z < this->size_.z),
 		"Point out of range"
 	);
-	return TileTypeDictionary::Instance().get(this->tiles_[point.x][point.y][point.z]);
+	return TileTypeDictionary::Instance().get(this->typeIdAt(point));
 }
 
 void Map::set(const MapCoords& point, const TileTypeId& tileTypeId)
