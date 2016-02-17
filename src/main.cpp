@@ -21,9 +21,8 @@
 using mh::foundation::Logger;
 #include "foundation/ResourceId.h"
 using mh::foundation::ResourceId;
-#include "map/TileType.h"
+#include "map/TileTypeDictionary.h"
 using mh::map::TileTypeDictionary;
-
 
 namespace
 {

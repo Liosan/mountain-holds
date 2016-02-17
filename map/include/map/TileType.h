@@ -1,12 +1,10 @@
 #pragma once
 
+#include <cstdint>
+
 #include "map_DLL_Export.hpp"
 
-#include <cstdint>
-#include <vector>
-
 #include "foundation/ResourceId.h"
-#include "foundation/Singleton.hpp"
 
 namespace mh
 {
@@ -27,19 +25,6 @@ namespace mh
 		private:
 			const TileTypeId id_;
 			const foundation::ResourceId resource_;
-		};
-
-		class MH_MAP_EXPORT TileTypeDictionary : public foundation::Singleton<TileTypeDictionary>
-		{
-			friend class foundation::Singleton<TileTypeDictionary>;
-		public:
-			const TileType& add(const foundation::ResourceId& resource);
-			const TileType& get(const TileTypeId& id) const;
-			std::uint16_t size() const;
-		private:
-			TileTypeDictionary();
-
-			std::vector<TileType> tileTypes_;
 		};
 	}
 }

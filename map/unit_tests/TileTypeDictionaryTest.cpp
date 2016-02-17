@@ -3,7 +3,7 @@
 #include <string>
 using std::string;
 
-#include "TileType.h"
+#include "TileTypeDictionary.h"
 using mh::map::TileType;
 using mh::map::TileTypeDictionary;
 using mh::foundation::ResourceId;
