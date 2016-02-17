@@ -5,8 +5,8 @@
 #include <cstdint>
 #include <vector>
 
-#include "ResourceId.h"
-#include "Singleton.hpp"
+#include "foundation/ResourceId.h"
+#include "foundation/Singleton.hpp"
 
 namespace mh
 {

@@ -1,7 +1,8 @@
 cmake_minimum_required(VERSION 3.2)
 project(map)
+set(MH_map_INCLUDES "${CMAKE_CURRENT_SOURCE_DIR}/include" PARENT_SCOPE)
 
-FILE(GLOB PUBLIC_FILES include/*.h include/*.hpp)
+FILE(GLOB PUBLIC_FILES include/map/*.h include/map/*.hpp)
 FILE(GLOB PRIVATE_FILES src/*.h src/*.hpp src/*.cpp)
 
 add_library (
@@ -10,7 +11,7 @@ add_library (
 	${PRIVATE_FILES}
 )
 
-include_directories("include")
+include_directories("include/map")
 
 target_link_libraries(${PROJECT_NAME} foundation)
 include_directories(${MH_foundation_INCLUDES})

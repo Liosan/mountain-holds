@@ -17,11 +17,11 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 
-#include "Logger.h"
+#include "foundation/Logger.h"
 using mh::foundation::Logger;
-#include "ResourceId.h"
+#include "foundation/ResourceId.h"
 using mh::foundation::ResourceId;
-#include "TileType.h"
+#include "map/TileType.h"
 using mh::map::TileTypeDictionary;
 
 
