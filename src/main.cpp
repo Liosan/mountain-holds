@@ -23,6 +23,8 @@ using mh::foundation::Logger;
 using mh::foundation::ResourceId;
 #include "map/TileTypeDictionary.h"
 using mh::map::TileTypeDictionary;
+#include "rendering/TextureManager.h"
+using mh::rendering::TextureManager;
 
 namespace
 {
@@ -31,8 +33,12 @@ namespace
 	{
 		// TODO should be per-library initialization functions
 		TileTypeDictionary::Initialize();
-		TileTypeDictionary::Instance().add(ResourceId("foo.png"));
-		MH_ASSERT(TileTypeDictionary::Instance().get(0).resource() == ResourceId("foo.png"), "Wrong resource?");
+		TileTypeDictionary::Instance().add(ResourceId("grass.png"));
+		TileTypeDictionary::Instance().add(ResourceId("dirt.png"));
+
+		TextureManager::Initialize(dataFolder);
+		TextureManager::Instance().getTexture(ResourceId("grass.png"));
+		TextureManager::Instance().getTexture(ResourceId("grass.png"));
 	}
 
 }
@@ -52,7 +58,7 @@ int main(int argc, char* argv[])
 	}
 	const std::string dataFolder = argv[1];
 	initialize(dataFolder);
-	Logger::LogInfo("MH initialized. Data folder: " + dataFolder);
+	Logger::LogInfo("MH initialized");
 
 	while (app.isOpen()) {
 		sf::Event event;

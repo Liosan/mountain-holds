@@ -13,8 +13,6 @@ add_library (
 
 include_directories("include/foundation")
 
-set_target_properties(${PROJECT_NAME} PROPERTIES
-	LINKER_LANGUAGE CXX
-)
+set_target_properties(${PROJECT_NAME} PROPERTIES LINKER_LANGUAGE CXX)
 
 #add_subdirectory(unit_tests)

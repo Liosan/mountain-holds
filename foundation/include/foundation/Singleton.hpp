@@ -30,7 +30,8 @@ namespace mh
 				return *instance;
 			}
 
-			static void Initialize()
+			template<typename... Args>
+			static void Initialize(const Args&... params)
 			{
 				auto& instance = Singleton<Contained>::InstancePtr();
 				if (instance)
@@ -38,7 +39,7 @@ namespace mh
 					MH_ASSERT(false, "Illegal double call to Initialize()");
 					throw std::logic_error("Illegal double call to Initialize()");
 				}
-				instance.reset(new Contained());
+				instance.reset(new Contained(params...));
 			}
 
 			static void Destroy()

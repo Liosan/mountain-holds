@@ -14,7 +14,10 @@ namespace mh
 		public:
 			explicit ResourceId(const std::string& text);
 
+			bool operator<(const ResourceId& other) const;
 			bool operator==(const ResourceId& other) const;
+
+			const std::string& filename() const;
 		private:
 			const std::string text_;
 		};

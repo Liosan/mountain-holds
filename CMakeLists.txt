@@ -43,7 +43,7 @@ foreach (MH_LIBRARY ${MH_LIBRARIES})
 endforeach()
 target_link_libraries(
 	${EXECUTABLE_NAME} 
-	${SFML_LIBRARIES} foundation map
+	${SFML_LIBRARIES} foundation map rendering
 )
 
 foreach (SFML_LIBRARY ${SFML_REQUIRED_LIBRARIES})

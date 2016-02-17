@@ -17,6 +17,4 @@ target_link_libraries(
 )
 include_directories(${GTEST_INCLUDE_DIR})
 
-set_target_properties(${PROJECT_NAME} PROPERTIES
-	LINKER_LANGUAGE CXX
-)
+set_target_properties(${PROJECT_NAME} PROPERTIES LINKER_LANGUAGE CXX)

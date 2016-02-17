@@ -18,8 +18,6 @@ include_directories(${MH_foundation_INCLUDES})
 
 include_directories(${SFML_INCLUDE_DIR})
 
-set_target_properties(${PROJECT_NAME} PROPERTIES
-	LINKER_LANGUAGE CXX
-)
+set_target_properties(${PROJECT_NAME} PROPERTIES LINKER_LANGUAGE CXX)
 
 add_subdirectory(unit_tests)
