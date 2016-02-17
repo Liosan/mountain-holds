@@ -2,6 +2,10 @@ cmake_minimum_required(VERSION 3.2)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 project(Mountainhomes)
 
+if (WIN32)
+	add_definitions("/W3 /D_CRT_SECURE_NO_WARNINGS /wd4251 /nologo" )
+endif (WIN32)
+
 set(OUTPUT_PATH "${CMAKE_CURRENT_BINARY_DIR}/Output")
 set(ARCHIVE_OUTPUT_DIRECTORY ${OUTPUT_PATH})
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${OUTPUT_PATH})
