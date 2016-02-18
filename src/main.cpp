@@ -19,34 +19,8 @@
 
 #include "foundation/Logger.h"
 using mh::foundation::Logger;
-#include "foundation/ResourceId.h"
-using mh::foundation::ResourceId;
-#include "map/TileTypeDictionary.h"
-using mh::map::TileTypeDictionary;
-#include "map/Map.h"
-using mh::map::Map;
-using mh::map::MapCoords;
-#include "rendering/TextureManager.h"
-using mh::rendering::TextureManager;
-#include "rendering/Renderer.h"
-using mh::rendering::Renderer;
-
-namespace
-{
-
-	void initialize(const std::string& dataFolder)
-	{
-		// TODO should be per-library initialization functions
-		TileTypeDictionary::Initialize();
-		TileTypeDictionary::Instance().add(ResourceId("grass.png"));
-		TileTypeDictionary::Instance().add(ResourceId("dirt.png"));
-
-		TextureManager::Initialize(dataFolder);
-		TextureManager::Instance().getTexture(ResourceId("grass.png"));
-		TextureManager::Instance().getTexture(ResourceId("grass.png"));
-	}
-
-}
+#include "Game.h"
+using mh::app::Game;
 
 int main(int argc, char* argv[]) 
 {
@@ -61,13 +35,9 @@ int main(int argc, char* argv[])
 		);
 		return 1;
 	}
-	const std::string dataFolder = argv[1];
-	initialize(dataFolder);
-	Logger::LogInfo("MH initialized");
 
-	Map map(MapCoords(10, 10, 10), 0);
-	map.set(MapCoords(3, 3, 5), 1);
-	Renderer renderer;
+	Game game(argv[1]);
+	Logger::LogInfo("MH initialized");
 
 	while (app.isOpen()) {
 		sf::Event event;
@@ -77,7 +47,7 @@ int main(int argc, char* argv[])
 				app.close();
 		}
 		app.clear();
-		renderer.renderMap(app, map, MapCoords(5, 5, 5));
+		game.update(app);
 		app.display();
 	}
 }
