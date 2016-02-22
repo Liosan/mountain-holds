@@ -20,7 +20,7 @@ endforeach (OUTPUTCONFIG CMAKE_CONFIGURATION_TYPES)
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules" ${CMAKE_MODULE_PATH})
 
-set(DEPENDENCY_DIRECTORY "../msvc2015-x64")
+set(DEPENDENCY_DIRECTORY "${CMAKE_SOURCE_DIR}/../msvc2015-x64")
 
 set(SFML_ROOT "${DEPENDENCY_DIRECTORY}/SFML-2.3.2")
 set(SFML_REQUIRED_LIBRARIES system window graphics)
@@ -29,6 +29,11 @@ include_directories(${SFML_INCLUDE_DIR})
 
 set(GTEST_ROOT "${DEPENDENCY_DIRECTORY}/gtest-1.7.0")
 find_package(GTEST 1.7 REQUIRED)
+
+set(PYTHON_ROOT "${DEPENDENCY_DIRECTORY}/stackless-python-3.5")
+set(PYTHON_INCLUDE_DIRS "${PYTHON_ROOT}/include")
+set(PYTHON_DEBUG_LIBRARIES "${PYTHON_ROOT}/lib/python35_d.lib")
+include_directories(${PYTHON_INCLUDE_DIRS})
 
 set(MH_LIBRARIES foundation scripting entities gui map rendering)
 foreach (MH_LIBRARY ${MH_LIBRARIES})
@@ -43,8 +48,9 @@ foreach (MH_LIBRARY ${MH_LIBRARIES})
 endforeach()
 target_link_libraries(
 	${EXECUTABLE_NAME} 
-	${SFML_LIBRARIES} foundation map rendering
+	${SFML_LIBRARIES} foundation map rendering ${PYTHON_DEBUG_LIBRARIES}
 )
+include_directories(${PYTHON_INCLUDE_DIR})
 
 foreach (SFML_LIBRARY ${SFML_REQUIRED_LIBRARIES})
 	# Debug
@@ -61,11 +67,20 @@ foreach (SFML_LIBRARY ${SFML_REQUIRED_LIBRARIES})
         $<TARGET_FILE_DIR:Mountainhomes>)
 endforeach(SFML_LIBRARY ${SFML_REQUIRED_LIBRARIES})
 
-set(GTEST_REQUIRED_LIBRARIES gtest.dll gtest_main.dll gtestd.dll gtest_maind.dll)
-foreach (GTEST_LIBRARY ${GTEST_REQUIRED_LIBRARIES})
+set(GTEST_REQUIRED_DLLS gtest.dll gtest_main.dll gtestd.dll gtest_maind.dll)
+foreach (GTEST_DLL ${GTEST_REQUIRED_DLLS})
 	add_custom_command(
 		TARGET ${EXECUTABLE_NAME} 
 		POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        "${GTEST_ROOT}/bin/${GTEST_LIBRARY}"
+        "${GTEST_ROOT}/bin/${GTEST_DLL}"
         $<TARGET_FILE_DIR:Mountainhomes>)
-endforeach (GTEST_LIBRARY ${GTEST_REQUIRED_LIBRARIES})
+endforeach (GTEST_DLL ${GTEST_REQUIRED_DLLS})
+
+set(PYTHON_REQUIRED_DLLS python35_d.dll)
+foreach (PYTHON_DLL ${PYTHON_REQUIRED_DLLS})
+	add_custom_command(
+		TARGET ${EXECUTABLE_NAME} 
+		POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "${PYTHON_ROOT}/bin/${PYTHON_DLL}"
+        $<TARGET_FILE_DIR:Mountainhomes>)
+endforeach (PYTHON_DLL ${PYTHON_REQUIRED_DLLS})

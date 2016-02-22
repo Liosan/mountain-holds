@@ -15,7 +15,10 @@
 // along with this program.If not, see http://www.gnu.org/licenses/.
 
 #include <iostream>
+
 #include <SFML/Graphics.hpp>
+
+#include <Python.h>
 
 #include "foundation/Logger.h"
 using mh::foundation::Logger;
@@ -24,9 +27,11 @@ using mh::app::Game;
 
 int main(int argc, char* argv[]) 
 {
+	Py_Initialize();
 	sf::RenderWindow app(sf::VideoMode(800, 600), "Mountainhomes");
 	Logger::LogInfo("This program comes with ABSOLUTELY NO WARRANTY; see http://www.gnu.org/licenses/gpl-3.0.en.html for details.");
 	Logger::LogInfo("This is free software, and you are welcome to redistribute it under certain conditions.");
+	Py_Finalize();
 
 	if (argc < 2)
 	{
