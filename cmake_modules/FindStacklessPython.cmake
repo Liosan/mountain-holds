@@ -1,0 +1,10 @@
+# This primitive custom-written script locates the Stackless python libraries
+# Requires STACKLESS_PYTHON_ROOT to be set
+
+if (NOT STACKLESS_PYTHON_ROOT)
+	MESSAGE(FATAL_ERROR "STACKLESS_PYTHON_ROOT not set")
+endif(NOT STACKLESS_PYTHON_ROOT)
+
+set(STACKLESS_PYTHON_INCLUDE_DIRS "${STACKLESS_PYTHON_ROOT}/include")
+set(STACKLESS_PYTHON_LIBRARIES "${STACKLESS_PYTHON_ROOT}/lib/python35.lib")
+set(STACKLESS_PYTHON_DEBUG_LIBRARIES "${STACKLESS_PYTHON_ROOT}/lib/python35_d.lib")

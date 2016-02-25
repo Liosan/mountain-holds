@@ -20,20 +20,19 @@ endforeach (OUTPUTCONFIG CMAKE_CONFIGURATION_TYPES)
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules" ${CMAKE_MODULE_PATH})
 
-set(DEPENDENCY_DIRECTORY "${CMAKE_SOURCE_DIR}/../msvc2015-x64")
+set(MH_DEPENDENCY_DIRECTORY "${CMAKE_SOURCE_DIR}/../msvc2015-x64")
+set(MH_TEST_DATA_DIRECTORY "${CMAKE_SOURCE_DIR}/../data/test")
 
-set(SFML_ROOT "${DEPENDENCY_DIRECTORY}/SFML-2.3.2")
+set(SFML_ROOT "${MH_DEPENDENCY_DIRECTORY}/SFML-2.3.2")
 set(SFML_REQUIRED_LIBRARIES system window graphics)
 find_package(SFML 2.3 REQUIRED ${SFML_REQUIRED_LIBRARIES})
 include_directories(${SFML_INCLUDE_DIR})
 
-set(GTEST_ROOT "${DEPENDENCY_DIRECTORY}/gtest-1.7.0")
+set(GTEST_ROOT "${MH_DEPENDENCY_DIRECTORY}/gtest-1.7.0")
 find_package(GTEST 1.7 REQUIRED)
 
-set(PYTHON_ROOT "${DEPENDENCY_DIRECTORY}/stackless-python-3.5")
-set(PYTHON_INCLUDE_DIRS "${PYTHON_ROOT}/include")
-set(PYTHON_DEBUG_LIBRARIES "${PYTHON_ROOT}/lib/python35_d.lib")
-include_directories(${PYTHON_INCLUDE_DIRS})
+set(STACKLESS_PYTHON_ROOT "${MH_DEPENDENCY_DIRECTORY}/stackless-python-3.5")
+find_package(StacklessPython 3.5 REQUIRED)
 
 set(MH_LIBRARIES foundation scripting entities gui map rendering)
 foreach (MH_LIBRARY ${MH_LIBRARIES})
@@ -48,9 +47,8 @@ foreach (MH_LIBRARY ${MH_LIBRARIES})
 endforeach()
 target_link_libraries(
 	${EXECUTABLE_NAME} 
-	${SFML_LIBRARIES} foundation map rendering ${PYTHON_DEBUG_LIBRARIES}
+	${SFML_LIBRARIES} foundation map rendering scripting
 )
-include_directories(${PYTHON_INCLUDE_DIR})
 
 foreach (SFML_LIBRARY ${SFML_REQUIRED_LIBRARIES})
 	# Debug
@@ -76,11 +74,11 @@ foreach (GTEST_DLL ${GTEST_REQUIRED_DLLS})
         $<TARGET_FILE_DIR:Mountainhomes>)
 endforeach (GTEST_DLL ${GTEST_REQUIRED_DLLS})
 
-set(PYTHON_REQUIRED_DLLS python35_d.dll)
-foreach (PYTHON_DLL ${PYTHON_REQUIRED_DLLS})
+set(STACKLESS_PYTHON_REQUIRED_DLLS python35_d.dll python35.dll)
+foreach (STACKLESS_PYTHON_DLL ${STACKLESS_PYTHON_REQUIRED_DLLS})
 	add_custom_command(
 		TARGET ${EXECUTABLE_NAME} 
 		POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        "${PYTHON_ROOT}/bin/${PYTHON_DLL}"
+        "${STACKLESS_PYTHON_ROOT}/bin/${STACKLESS_PYTHON_DLL}"
         $<TARGET_FILE_DIR:Mountainhomes>)
-endforeach (PYTHON_DLL ${PYTHON_REQUIRED_DLLS})
+endforeach (STACKLESS_PYTHON_DLL ${STACKLESS_PYTHON_REQUIRED_DLLS})
