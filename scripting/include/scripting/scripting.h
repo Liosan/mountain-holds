@@ -24,6 +24,8 @@ namespace mh
 		};
 
 		typedef std::uint64_t ModuleId;
+		extern const MH_SCRIPTING_EXPORT ModuleId CoreModuleId;
+
 		struct Module
 		{
 			Module(const ModuleId& id, const std::string& name);
@@ -42,6 +44,6 @@ namespace mh
 		ModuleId MH_SCRIPTING_EXPORT loadModule(const std::string& moduleName);
 		/// Returns a list of loaded modules.
 		std::vector<Module> MH_SCRIPTING_EXPORT loadedModules();
-		void MH_SCRIPTING_EXPORT invoke(const ModuleId module, const std::string& functionName);
+		void MH_SCRIPTING_EXPORT invoke(const ModuleId& module, const std::string& functionName);
 	}
 }

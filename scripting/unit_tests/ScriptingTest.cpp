@@ -67,6 +67,36 @@ namespace mh
 			{
 				EXPECT_THROW(finalizeScripting(), std::logic_error);
 			}
+
+			TEST_F(ScriptingTest, InvokeFunctionPass_ShouldDoNothing)
+			{
+				initializeScripting(SCRIPTING_TEST_DATA_DIRECTORY, "core");
+				invoke(CoreModuleId, "doNothing");
+			}
+
+			TEST_F(ScriptingTest, InvokeNonExistantFunction_ShouldThrow)
+			{
+				initializeScripting(SCRIPTING_TEST_DATA_DIRECTORY, "core");
+				EXPECT_THROW(invoke(CoreModuleId, "nonexistant"), ScriptExecutionException);
+			}
+
+			TEST_F(ScriptingTest, InvokeNonExistantModule_ShouldThrow)
+			{
+				initializeScripting(SCRIPTING_TEST_DATA_DIRECTORY, "core");
+				EXPECT_THROW(invoke(12, "doNothing"), ScriptExecutionException);
+			}
+
+			TEST_F(ScriptingTest, InvokeNotCallableSymbol_ShouldThrow)
+			{
+				initializeScripting(SCRIPTING_TEST_DATA_DIRECTORY, "core");
+				EXPECT_THROW(invoke(CoreModuleId, "notCallable"), ScriptExecutionException);
+			}
+
+			TEST_F(ScriptingTest, InvokeFunctionWithException_ShouldThrow)
+			{
+				initializeScripting(SCRIPTING_TEST_DATA_DIRECTORY, "core");
+				EXPECT_THROW(invoke(CoreModuleId, "throwException"), ScriptExecutionException);
+			}
 		}
 	}
 }
