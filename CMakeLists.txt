@@ -3,7 +3,7 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 project(Mountainhomes)
 
 if (WIN32)
-	add_definitions("/W3 /D_CRT_SECURE_NO_WARNINGS /wd4251 /nologo" )
+	add_definitions("/W3 /WX /D_CRT_SECURE_NO_WARNINGS /wd4251 /nologo" )
 endif (WIN32)
 
 set(OUTPUT_PATH "${CMAKE_CURRENT_BINARY_DIR}/Output")
