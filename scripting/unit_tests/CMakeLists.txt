@@ -18,4 +18,4 @@ target_link_libraries(
 include_directories(${GTEST_INCLUDE_DIR})
 
 set_target_properties(${PROJECT_NAME} PROPERTIES LINKER_LANGUAGE CXX)
-add_definitions(-DSCRIPTING_TEST_DATA_DIRECTORY="${MH_TEST_DATA_DIRECTORY}/scripting")
+add_definitions(-DSCRIPTING_TEST_DATA_DIRECTORY="${CMAKE_CURRENT_SOURCE_DIR}/data")

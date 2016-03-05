@@ -89,7 +89,7 @@ namespace mh
 				EXPECT_EQ(4, result.convertToNumber());
 			}
 
-			TEST_F(ScriptingTest, InvokeFunctionReturningInt_ShouldRetrieveInt)
+			TEST_F(ScriptingTest, InvokeFunctionReturningString_ShouldRetrieveString)
 			{
 				initializeScripting(SCRIPTING_TEST_DATA_DIRECTORY, "core");
 				const auto result = invoke(CoreModuleId, "returnString");
