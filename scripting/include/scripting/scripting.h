@@ -9,6 +9,8 @@ namespace mh
 {
 	namespace scripting
 	{
+		class Value;
+
 		/// Represents an error with initialization of the scripting system or a particular module.
 		class ScriptLoadingException : public std::exception
 		{
@@ -22,10 +24,11 @@ namespace mh
 		public:
 			explicit ScriptExecutionException(const std::string& message);
 		};
-
+		
 		typedef std::uint64_t ModuleId;
 		extern const MH_SCRIPTING_EXPORT ModuleId CoreModuleId;
 
+		// TODO pull out module functionality to separate header
 		struct Module
 		{
 			Module(const ModuleId& id, const std::string& name);
@@ -44,6 +47,8 @@ namespace mh
 		ModuleId MH_SCRIPTING_EXPORT loadModule(const std::string& moduleName);
 		/// Returns a list of loaded modules.
 		std::vector<Module> MH_SCRIPTING_EXPORT loadedModules();
-		void MH_SCRIPTING_EXPORT invoke(const ModuleId& module, const std::string& functionName);
+
+		Value MH_SCRIPTING_EXPORT readValue(const ModuleId& module, const std::string& value);
+		Value MH_SCRIPTING_EXPORT invoke(const ModuleId& module, const std::string& functionName);
 	}
 }

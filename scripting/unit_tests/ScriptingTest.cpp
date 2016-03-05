@@ -4,6 +4,7 @@
 using std::string;
 
 #include "scripting.h"
+#include "Value.h"
 
 #include <Python.h>
 
@@ -68,10 +69,32 @@ namespace mh
 				EXPECT_THROW(finalizeScripting(), std::logic_error);
 			}
 
+			// TODO test value -> from natively constructed python int, string, list, nested list, null
+			// TODO test invoke -> return list, nested list
+			// TODO test read value -> return int, string, list, nested list, null
+			// TODO test read value -> failure cases: wrong module, non-existant symbol
+
 			TEST_F(ScriptingTest, InvokeFunctionPass_ShouldDoNothing)
 			{
 				initializeScripting(SCRIPTING_TEST_DATA_DIRECTORY, "core");
-				invoke(CoreModuleId, "doNothing");
+				const auto result = invoke(CoreModuleId, "doNothing");
+				EXPECT_TRUE(result.empty());
+			}
+
+			TEST_F(ScriptingTest, InvokeFunctionReturningInt_ShouldRetrieveInt)
+			{
+				initializeScripting(SCRIPTING_TEST_DATA_DIRECTORY, "core");
+				const auto result = invoke(CoreModuleId, "returnInt");
+				EXPECT_FALSE(result.empty());
+				EXPECT_EQ(4, result.convertToNumber());
+			}
+
+			TEST_F(ScriptingTest, InvokeFunctionReturningInt_ShouldRetrieveInt)
+			{
+				initializeScripting(SCRIPTING_TEST_DATA_DIRECTORY, "core");
+				const auto result = invoke(CoreModuleId, "returnString");
+				EXPECT_FALSE(result.empty());
+				EXPECT_EQ("I am cow", result.convertToString());
 			}
 
 			TEST_F(ScriptingTest, InvokeNonExistantFunction_ShouldThrow)
@@ -89,7 +112,7 @@ namespace mh
 			TEST_F(ScriptingTest, InvokeNotCallableSymbol_ShouldThrow)
 			{
 				initializeScripting(SCRIPTING_TEST_DATA_DIRECTORY, "core");
-				EXPECT_THROW(invoke(CoreModuleId, "notCallable"), ScriptExecutionException);
+				EXPECT_THROW(invoke(CoreModuleId, "number"), ScriptExecutionException);
 			}
 
 			TEST_F(ScriptingTest, InvokeFunctionWithException_ShouldThrow)

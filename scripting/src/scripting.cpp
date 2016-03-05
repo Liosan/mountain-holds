@@ -1,8 +1,7 @@
-#include <Python.h>
-
 #include "scripting.h"
 using mh::scripting::ModuleId;
 using mh::scripting::Module;
+using mh::scripting::Value;
 using mh::scripting::ScriptLoadingException;
 using mh::scripting::ScriptExecutionException;
 using std::string;
@@ -23,72 +22,18 @@ using std::to_string;
 #include "foundation/debug.h"
 #include "foundation/Logger.h"
 using mh::foundation::Logger;
+#include "Value.h"
+using mh::scripting::Value;
+#include "PyObjectHolder.h"
+using mh::scripting::PyObjectHolder;
+#include "PythonUtils.h"
+using mh::scripting::checkPythonError;
+using mh::scripting::PyObjectToString;
 
 const ModuleId mh::scripting::CoreModuleId = 0;
 
 namespace
 {
-	struct PyObjectHolder
-	{
-		PyObjectHolder() :
-			obj_(nullptr)
-		{}
-
-		PyObjectHolder(PyObject* const object) :
-			obj_(object)
-		{}
-
-		PyObjectHolder(const PyObjectHolder& other) :
-			obj_(other.obj_)
-		{
-			Py_INCREF(this->obj_);
-		}
-		
-		PyObjectHolder(PyObjectHolder&& other) :
-			obj_(other.obj_)
-		{} // No reference increase? TODO verify
-
-		PyObjectHolder& operator=(const PyObjectHolder& other)
-		{
-			Py_XDECREF(this->obj_);
-			this->obj_ = other.obj_;
-			Py_INCREF(this->obj_);
-			return *this;
-		}
-
-		PyObjectHolder& operator=(PyObjectHolder&& other)
-		{
-			Py_XDECREF(this->obj_);
-			this->obj_ = other.obj_;
-			// No reference increase? TODO verify
-			return *this;
-		}
-
-		// TODO pull out to header, write unit tests, operator != nullptr
-
-		~PyObjectHolder()
-		{
-			Py_XDECREF(this->obj_);
-		}
-
-		bool operator==(const std::nullptr_t) const
-		{
-			return this->obj_ == nullptr;
-		}
-
-		explicit operator bool() const
-		{
-			return this->obj_ != nullptr;
-		}
-
-		operator PyObject*() const
-		{
-			return this->obj_;
-		}
-
-		PyObject* obj_;
-	};
-
 	struct PythonModule
 	{
 		PythonModule(const Module& module, const PyObjectHolder& pyObj) :
@@ -113,7 +58,7 @@ namespace
 		if (!name)
 			throw ScriptLoadingException("Cannot decode module name " + moduleName);
 
-		const PyObjectHolder module(PyImport_Import(name.obj_));
+		const PyObjectHolder module(PyImport_Import(name));
 		if (!module)
 			throw ScriptLoadingException("Cannot load module " + moduleName);
 
@@ -128,26 +73,6 @@ namespace
 		if (modules.size() < moduleId)
 			throw ScriptExecutionException("Module with id " + to_string(moduleId) + " not found");
 		return *modules[moduleId];
-	}
-
-	string PyUnicodeStringToString(PyObject* const obj)
-	{
-		PyObjectHolder strObj = PyObject_Str(obj);
-		const wstring widechar(PyUnicode_AS_UNICODE(strObj.obj_));
-		string buffer;
-		buffer.resize(widechar.size());
-		std::wcstombs(&buffer[0], &widechar[0], widechar.size());
-		return buffer;
-	}
-
-	void checkPythonError()
-	{
-		if (PyErr_Occurred())
-		{
-			PyObject *ptype, *pvalue, *ptraceback;
-			PyErr_Fetch(&ptype, &pvalue, &ptraceback);
-			throw ScriptExecutionException(PyUnicodeStringToString(pvalue));
-		}
 	}
 }
 
@@ -224,7 +149,7 @@ vector<Module> mh::scripting::loadedModules()
 	return result;
 }
 
-void mh::scripting::invoke(const ModuleId& moduleId, const string& functionName)
+Value mh::scripting::invoke(const ModuleId& moduleId, const string& functionName)
 {
 	auto& module = findModule(moduleId);
 	PyObjectHolder function(PyObject_GetAttrString(module.pyObj_, functionName.c_str()));
@@ -239,7 +164,8 @@ void mh::scripting::invoke(const ModuleId& moduleId, const string& functionName)
 			"Symbol " + functionName + " in module " + module.module_.name_ + " is not callable"
 		);
 
-	PyObjectHolder args = PyTuple_New(0);
-	PyObject_CallObject(function, args);
+	const PyObjectHolder args = PyTuple_New(0);
+	auto result = std::make_unique<PyObjectHolder>(PyObject_CallObject(function, args));
 	checkPythonError();
+	return Value(std::move(result));
 }
