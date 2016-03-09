@@ -17,7 +17,8 @@ namespace mh
 		class ScriptValueConversionException : public std::exception
 		{
 		public:
-			explicit ScriptValueConversionException(const std::string& message, const Value& value);
+			explicit ScriptValueConversionException(const std::string& message);
+			ScriptValueConversionException(const std::string& message, const Value& value);
 		};
 
 		/// Wraps a value returned from scripts.

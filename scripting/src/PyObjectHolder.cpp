@@ -14,7 +14,7 @@ PyObjectHolder::PyObjectHolder(PyObject* const object) :
 PyObjectHolder::PyObjectHolder(const PyObjectHolder& other) :
 	obj_(other.obj_)
 {
-	Py_INCREF(this->obj_);
+	Py_XINCREF(this->obj_);
 }
 
 PyObjectHolder::PyObjectHolder(PyObjectHolder&& other) :
@@ -25,7 +25,7 @@ PyObjectHolder& PyObjectHolder::operator=(const PyObjectHolder& other)
 {
 	Py_XDECREF(this->obj_);
 	this->obj_ = other.obj_;
-	Py_INCREF(this->obj_);
+	Py_XINCREF(this->obj_);
 	return *this;
 }
 

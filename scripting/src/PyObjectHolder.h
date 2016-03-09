@@ -1,12 +1,14 @@
 #pragma once
 
+#include "scripting_DLL_Export.hpp"
+
 #include <Python.h>
 
 namespace mh
 {
 	namespace scripting
 	{
-		class PyObjectHolder
+		class MH_SCRIPTING_EXPORT PyObjectHolder
 		{
 		public:
 			PyObjectHolder();
