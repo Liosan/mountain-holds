@@ -11,17 +11,25 @@ using mh::map::MapCoords;
 using mh::rendering::TextureManager;
 #include "rendering/Renderer.h"
 using mh::rendering::Renderer;
+#include "scripting/scripting.h"
+using mh::scripting::initializeScripting;
+using mh::scripting::invoke;
+using mh::scripting::CoreModuleId;
+#include "scripting/Value.h"
+using mh::scripting::Value;
 
 Game::Game(const std::string& dataFolder)
 {
-	// TODO should be per-library initialization functions
-	TileTypeDictionary::Initialize();
-	TileTypeDictionary::Instance().add(ResourceId("grass.png"));
-	TileTypeDictionary::Instance().add(ResourceId("dirt.png"));
+	initializeScripting(dataFolder, "mh-core");
 
+	// TODO should be per-library initialization functions
+
+	TileTypeDictionary::Initialize();
+	const auto tileTypes = invoke(CoreModuleId, "loadTileTypes").convertToArray();
+	for (const auto& tileType : tileTypes)
+		TileTypeDictionary::Instance().add(ResourceId(tileType.convertToString()));
+	
 	TextureManager::Initialize(dataFolder);
-	TextureManager::Instance().getTexture(ResourceId("grass.png"));
-	TextureManager::Instance().getTexture(ResourceId("grass.png"));
 
 	this->map_ = std::make_unique<Map>(MapCoords(10, 10, 10), 0);
 	this->map_->set(MapCoords(3, 3, 5), 1);
