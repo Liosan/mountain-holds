@@ -25,6 +25,7 @@ void mh::scripting::checkPythonError()
 	{
 		PyObject *ptype, *pvalue, *ptraceback;
 		PyErr_Fetch(&ptype, &pvalue, &ptraceback);
-		throw ScriptExecutionException(PyObjectToString(pvalue));
+		const auto message(PyObjectToString(pvalue));
+		throw ScriptExecutionException(message);
 	}
 }

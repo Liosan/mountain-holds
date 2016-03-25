@@ -31,10 +31,20 @@ Game::Game(const std::string& dataFolder)
 	
 	TextureManager::Initialize(dataFolder);
 
-	this->map_ = std::make_unique<Map>(MapCoords(10, 10, 10), 0);
-	this->map_->set(MapCoords(3, 3, 5), 1);
+	const auto mapData = invoke(CoreModuleId, "generateMap").convertToArray();
+	const uint32_t sizeX = static_cast<uint32_t>(mapData.size());
+	const uint32_t sizeY = static_cast<uint32_t>(mapData[0].convertToArray().size());
+	const uint32_t sizeZ = static_cast<uint32_t>(mapData[0].convertToArray()[0].convertToArray().size());
+	this->map_ = std::make_unique<Map>(MapCoords(sizeX, sizeY, sizeZ), 0);
+	for (uint32_t x = 0; x < sizeX; ++x)
+		for (uint32_t y = 0; y < sizeY; ++y)
+			for (uint32_t z = 0; z < sizeZ; ++z)
+				this->map_->set(
+					MapCoords(x, y, z), 
+					static_cast<uint32_t>(mapData[x].convertToArray()[y].convertToArray()[z].convertToNumber())
+				);
 	this->renderer_ = std::make_unique<Renderer>();
-	this->mapCenter_ = std::make_unique<MapCoords>(5, 5, 5);
+	this->mapCenter_ = std::make_unique<MapCoords>(sizeX / 2, sizeY / 2, sizeZ / 2);
 }
 
 Game::~Game()
