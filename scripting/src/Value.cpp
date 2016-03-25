@@ -77,5 +77,17 @@ string Value::convertToString() const
 
 vector<Value> Value::convertToArray() const
 {
-	throw ScriptValueConversionException("Not implemented", *this);
+	if (this->empty())
+		throw ScriptValueConversionException("Failed to convert empty python object to array");
+
+	if (PyUnicode_Check(*this->obj_))
+		throw ScriptValueConversionException("Refusing to convert string to array", *this);
+
+	if (!PySequence_Check(*this->obj_))
+		throw ScriptValueConversionException("Failed to convert python object to array", *this);
+
+	vector<Value> result;
+	for (Py_ssize_t i = 0; i < PySequence_Size(*this->obj_); ++i)
+		result.emplace_back(PySequence_GetItem(*this->obj_, i));
+	return result;
 }

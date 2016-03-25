@@ -174,6 +174,7 @@ namespace mh
 				ASSERT_FALSE(value.empty());
 				EXPECT_EQ("bob", value.convertToString());
 				EXPECT_THROW(value.convertToNumber(), ScriptValueConversionException);
+				EXPECT_THROW(value.convertToArray(), ScriptValueConversionException);
 			}
 
 			TEST_F(ScriptingValueTest, IntValue_ShouldConvert)
@@ -182,6 +183,32 @@ namespace mh
 				ASSERT_FALSE(value.empty());
 				EXPECT_EQ(29, value.convertToNumber());
 				EXPECT_THROW(value.convertToString(), ScriptValueConversionException);
+				EXPECT_THROW(value.convertToArray(), ScriptValueConversionException);
+			}
+
+			TEST_F(ScriptingValueTest, EmptyArrayValue_ShouldConvert)
+			{
+				const Value empty(this->run("[]"));
+				ASSERT_FALSE(empty.empty());
+				EXPECT_THROW(empty.convertToNumber(), ScriptValueConversionException);
+				EXPECT_THROW(empty.convertToString(), ScriptValueConversionException);
+				ASSERT_TRUE(empty.convertToArray().empty());
+			}
+
+			TEST_F(ScriptingValueTest, DifferentArrayValues_ShouldConvert)
+			{
+				const Value values(this->run("[12, 13, 'bob', [99, 98]]"));
+				ASSERT_FALSE(values.empty());
+				EXPECT_THROW(values.convertToNumber(), ScriptValueConversionException);
+				EXPECT_THROW(values.convertToString(), ScriptValueConversionException);
+				const auto arr = values.convertToArray();
+				ASSERT_EQ(4, arr.size());
+				EXPECT_EQ(12, arr[0].convertToNumber());
+				EXPECT_EQ(13, arr[1].convertToNumber());
+				EXPECT_EQ("bob", arr[2].convertToString());
+				const auto nestedArr = arr[3].convertToArray();
+				EXPECT_EQ(99, nestedArr[0].convertToNumber());
+				EXPECT_EQ(98, nestedArr[1].convertToNumber());
 			}
 		}
 	}
