@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.2)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
-project(Mountainhomes)
+project(MountainHolds)
 
 if (WIN32)
 	add_definitions("/W3 /WX /D_CRT_SECURE_NO_WARNINGS /wd4251 /nologo" )
@@ -38,7 +38,7 @@ foreach (MH_LIBRARY ${MH_LIBRARIES})
 	add_subdirectory(${MH_LIBRARY})
 endforeach()
 
-set(EXECUTABLE_NAME "Mountainhomes")
+set(EXECUTABLE_NAME "MountainHolds")
 FILE(GLOB EXECUTABLE_SOURCE_FILES src/*.h src/*.hpp src/*.cpp)
 add_executable(${EXECUTABLE_NAME} ${EXECUTABLE_SOURCE_FILES})
 foreach (MH_LIBRARY ${MH_LIBRARIES})
@@ -55,13 +55,13 @@ foreach (SFML_LIBRARY ${SFML_REQUIRED_LIBRARIES})
 		TARGET ${EXECUTABLE_NAME} 
 		POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different
         "${SFML_ROOT}/bin/sfml-${SFML_LIBRARY}-d-2.dll"
-        $<TARGET_FILE_DIR:Mountainhomes>)
+        $<TARGET_FILE_DIR:MountainHolds>)
 	# Release
 	add_custom_command(
 		TARGET ${EXECUTABLE_NAME} 
 		POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different
         "${SFML_ROOT}/bin/sfml-${SFML_LIBRARY}-2.dll"
-        $<TARGET_FILE_DIR:Mountainhomes>)
+        $<TARGET_FILE_DIR:MountainHolds>)
 endforeach(SFML_LIBRARY ${SFML_REQUIRED_LIBRARIES})
 
 set(GTEST_REQUIRED_DLLS gtest.dll gtest_main.dll gtestd.dll gtest_maind.dll)
@@ -70,7 +70,7 @@ foreach (GTEST_DLL ${GTEST_REQUIRED_DLLS})
 		TARGET ${EXECUTABLE_NAME} 
 		POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different
         "${GTEST_ROOT}/bin/${GTEST_DLL}"
-        $<TARGET_FILE_DIR:Mountainhomes>)
+        $<TARGET_FILE_DIR:MountainHolds>)
 endforeach (GTEST_DLL ${GTEST_REQUIRED_DLLS})
 
 set(STACKLESS_PYTHON_REQUIRED_DLLS python35_d.dll python35.dll)
@@ -79,5 +79,5 @@ foreach (STACKLESS_PYTHON_DLL ${STACKLESS_PYTHON_REQUIRED_DLLS})
 		TARGET ${EXECUTABLE_NAME} 
 		POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different
         "${STACKLESS_PYTHON_ROOT}/bin/${STACKLESS_PYTHON_DLL}"
-        $<TARGET_FILE_DIR:Mountainhomes>)
+        $<TARGET_FILE_DIR:MountainHolds>)
 endforeach (STACKLESS_PYTHON_DLL ${STACKLESS_PYTHON_REQUIRED_DLLS})

@@ -1,3 +1,3 @@
-Mountainhomes - a game about dwarfs.
+MountainHolds - a 4X strategy in a unique setting.
 
-A Dwarf Fortress-inspired open source game project, written in C++ and Python.
+A Cilivization-inspired open source game project, written in C++ and Python.

@@ -1,4 +1,4 @@
-// Mountainhomes - an open-source game about dwarfs.
+// MountainHolds - an open-source 4X strategy game in a unique setting.
 // Copyright(C) 2016 Szymon Kurek
 //
 // This program is free software : you can redistribute it and / or modify
@@ -38,7 +38,7 @@ int main(int argc, char* argv[])
 
 	Game game(argv[1]);
 
-	sf::RenderWindow app(sf::VideoMode(800, 600), "Mountainhomes");
+	sf::RenderWindow app(sf::VideoMode(800, 600), "Mountain Holds");
 	
 	Logger::LogInfo("MH initialized");
 
