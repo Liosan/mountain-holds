@@ -71,10 +71,6 @@ namespace mh
 				EXPECT_THROW(finalizeScripting(), std::logic_error);
 			}
 
-			// TODO test value -> from natively constructed python int, string, list, nested list, null
-			// TODO test read value -> return int, string, list, nested list, null
-			// TODO test read value -> failure cases: wrong module, non-existant symbol
-
 			TEST_F(ScriptingTest, InvokeFunctionPass_ShouldDoNothing)
 			{
 				initializeScripting(SCRIPTING_TEST_DATA_DIRECTORY, "core");

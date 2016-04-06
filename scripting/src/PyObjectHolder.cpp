@@ -19,7 +19,9 @@ PyObjectHolder::PyObjectHolder(const PyObjectHolder& other) :
 
 PyObjectHolder::PyObjectHolder(PyObjectHolder&& other) :
 	obj_(other.obj_)
-{} // No reference increase? TODO verify
+{
+	other.obj_ = nullptr;
+}
 
 PyObjectHolder& PyObjectHolder::operator=(const PyObjectHolder& other)
 {
@@ -33,7 +35,7 @@ PyObjectHolder& PyObjectHolder::operator=(PyObjectHolder&& other)
 {
 	Py_XDECREF(this->obj_);
 	this->obj_ = other.obj_;
-	// No reference increase? TODO verify
+	other.obj_ = nullptr;
 	return *this;
 }
 

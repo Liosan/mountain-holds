@@ -48,7 +48,6 @@ namespace mh
 		/// Returns a list of loaded modules.
 		std::vector<Module> MH_SCRIPTING_EXPORT loadedModules();
 
-		Value MH_SCRIPTING_EXPORT readValue(const ModuleId& module, const std::string& value);
 		Value MH_SCRIPTING_EXPORT invoke(const ModuleId& module, const std::string& functionName);
 	}
 }
