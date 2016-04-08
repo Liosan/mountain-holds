@@ -17,8 +17,6 @@
 #include <string>
 using std::string;
 
-#include <SFML/Graphics.hpp>
-
 #include "foundation/Logger.h"
 using mh::foundation::Logger;
 #include "Game.h"
@@ -40,23 +38,7 @@ int main(int argc, char* argv[])
 		Logger::LogInfo("This is free software, and you are welcome to redistribute it under certain conditions.");
 
 		Game game(argv[1]);
-
-		sf::RenderWindow app(sf::VideoMode(800, 600), "Mountain Holds");
-
-		Logger::LogInfo("MH initialized");
-
-		while (app.isOpen()) 
-		{
-			sf::Event event;
-			while (app.pollEvent(event))
-			{
-				if (event.type == sf::Event::Closed)
-					app.close();
-			}
-			app.clear();
-			game.update(app);
-			app.display();
-		}
+		return game.run();
 	}
 	catch (const std::exception& ex)
 	{

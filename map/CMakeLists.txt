@@ -15,6 +15,8 @@ include_directories("include/map")
 
 target_link_libraries(${PROJECT_NAME} foundation)
 include_directories(${MH_foundation_INCLUDES})
+target_link_libraries(${PROJECT_NAME} scripting)
+include_directories(${MH_scripting_INCLUDES})
 
 include_directories(${SFML_INCLUDE_DIR})
 

@@ -1,14 +1,19 @@
 #include "Game.h"
 using mh::app::Game;
-#include "foundation/ResourceId.h"
-using mh::foundation::ResourceId;
+
+#include <SFML/Graphics.hpp>
+
+#include "foundation/Logger.h"
+using mh::foundation::Logger;
 #include "map/TileTypeDictionary.h"
 using mh::map::TileTypeDictionary;
 #include "map/Map.h"
 using mh::map::Map;
 using mh::map::MapCoords;
-#include "rendering/TextureManager.h"
-using mh::rendering::TextureManager;
+using mh::map::initializeMaps;
+using mh::map::generateMapFromScript;
+#include "rendering/rendering.h"
+using mh::rendering::initializeRendering;
 #include "rendering/Renderer.h"
 using mh::rendering::Renderer;
 #include "scripting/scripting.h"
@@ -21,32 +26,36 @@ using mh::scripting::Value;
 Game::Game(const std::string& dataFolder)
 {
 	initializeScripting(dataFolder, "mh-core");
-
-	// TODO should be per-library initialization functions
-
-	TileTypeDictionary::Initialize();
-	const auto tileTypes = invoke(CoreModuleId, "loadTileTypes").convertToArray();
-	for (const auto& tileType : tileTypes)
-		TileTypeDictionary::Instance().add(ResourceId(tileType.convertToString()));
-	
-	TextureManager::Initialize(dataFolder);
-
-	const auto mapData = invoke(CoreModuleId, "generateMap").convertToArray();
-	const uint32_t sizeX = static_cast<uint32_t>(mapData.size());
-	const uint32_t sizeY = static_cast<uint32_t>(mapData[0].convertToArray().size());
-	this->map_ = std::make_unique<Map>(MapCoords(sizeX, sizeY), 0);
-	for (uint32_t x = 0; x < sizeX; ++x)
-		for (uint32_t y = 0; y < sizeY; ++y)
-			this->map_->set(
-				MapCoords(x, y), 
-				static_cast<uint32_t>(mapData[x].convertToArray()[y].convertToNumber())
-			);
+	initializeMaps();
+	initializeRendering(dataFolder);
+	this->map_ = generateMapFromScript();
 	this->renderer_ = std::make_unique<Renderer>();
-	this->mapCenter_ = std::make_unique<MapCoords>(sizeX / 2, sizeY / 2);
+	this->mapCenter_ = std::make_unique<MapCoords>(this->map_->size().x / 2, this->map_->size().y / 2);
 }
 
 Game::~Game()
 {}
+
+int32_t Game::run()
+{
+	sf::RenderWindow app(sf::VideoMode(800, 600), "Mountain Holds");
+
+	Logger::LogInfo("MH initialized");
+
+	while (app.isOpen())
+	{
+		sf::Event event;
+		while (app.pollEvent(event))
+		{
+			if (event.type == sf::Event::Closed)
+				app.close();
+		}
+		app.clear();
+		this->update(app);
+		app.display();
+	}
+	return 0;
+}
 
 void Game::update(sf::RenderWindow& window)
 {

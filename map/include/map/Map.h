@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <memory>
 
 #include <SFML/System/Vector2.hpp>
 
@@ -12,7 +13,10 @@ namespace mh
 {
 	namespace map
 	{
-		class MapCoords : public sf::Vector2<std::uint32_t>
+		/// Loads necessary map-data from all scripting data modules, enabling maps to be created later
+		void MH_MAP_EXPORT initializeMaps();
+
+		class MH_MAP_EXPORT MapCoords : public sf::Vector2<std::uint32_t>
 		{
 		public:
 			MapCoords(const std::uint32_t x, const std::uint32_t y) :
@@ -33,5 +37,7 @@ namespace mh
 			const MapCoords size_;
 			std::vector<std::vector<TileTypeId>> tiles_;
 		};
+
+		std::unique_ptr<Map> MH_MAP_EXPORT generateMapFromScript();
 	}
 }

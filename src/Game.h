@@ -28,8 +28,10 @@ namespace mh
 			explicit Game(const std::string& dataFolder);
 			~Game();
 
-			void update(sf::RenderWindow& window);
+			int32_t run();
 		private:
+			void update(sf::RenderWindow& window);
+
 			std::unique_ptr<map::MapCoords> mapCenter_;
 			std::unique_ptr<map::Map> map_;
 			std::unique_ptr<rendering::Renderer> renderer_;
