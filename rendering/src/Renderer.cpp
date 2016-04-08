@@ -18,7 +18,7 @@ void Renderer::renderMap(sf::RenderWindow& window, const Map& map, const MapCoor
 	{
 		for (std::uint32_t y = 0; y < map.size().y; ++y)
 		{
-			const auto& tileType = map.typeAt(MapCoords(x, y, center.z));
+			const auto& tileType = map.typeAt(MapCoords(x, y));
 			const auto& texture = TextureManager::Instance().getTexture(tileType.resource());
 			sf::Sprite sprite(texture);
 			const std::int32_t offsetX = static_cast<std::int32_t>(x) - static_cast<std::int32_t>(center.x);

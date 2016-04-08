@@ -2,7 +2,7 @@
 
 #include <vector>
 
-#include <SFML/System/Vector3.hpp>
+#include <SFML/System/Vector2.hpp>
 
 #include "map_DLL_Export.hpp"
 
@@ -12,11 +12,11 @@ namespace mh
 {
 	namespace map
 	{
-		class MapCoords : public sf::Vector3<std::uint32_t>
+		class MapCoords : public sf::Vector2<std::uint32_t>
 		{
 		public:
-			MapCoords(const std::uint32_t x, const std::uint32_t y, const std::uint32_t z) :
-				sf::Vector3<std::uint32_t>(x, y, z)
+			MapCoords(const std::uint32_t x, const std::uint32_t y) :
+				sf::Vector2<std::uint32_t>(x, y)
 			{}
 		};
 
@@ -31,7 +31,7 @@ namespace mh
 			const MapCoords& size() const;
 		private:
 			const MapCoords size_;
-			std::vector<std::vector<std::vector<TileTypeId>>> tiles_;
+			std::vector<std::vector<TileTypeId>> tiles_;
 		};
 	}
 }

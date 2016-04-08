@@ -13,25 +13,23 @@ Map::Map(const MapCoords& size, const TileTypeId& initialTileType) :
 	this->tiles_.resize(size.x);
 	for (auto& col : this->tiles_)
 	{
-		col.resize(size.y);
-		for (auto& slice : col)
-			slice.resize(size.z, initialTileType);
+		col.resize(size.y, initialTileType);
 	}
 }
 
 const TileTypeId& Map::typeIdAt(const MapCoords& point) const
 {
 	MH_ASSERT(
-		(point.x < this->size_.x) && (point.y < this->size_.y) && (point.z < this->size_.z),
+		(point.x < this->size_.x) && (point.y < this->size_.y),
 		"Point out of range"
 	);
-	return this->tiles_[point.x][point.y][point.z];
+	return this->tiles_[point.x][point.y];
 }
 
 const TileType& Map::typeAt(const MapCoords& point) const
 {
 	MH_ASSERT(
-		(point.x < this->size_.x) && (point.y < this->size_.y) && (point.z < this->size_.z),
+		(point.x < this->size_.x) && (point.y < this->size_.y),
 		"Point out of range"
 	);
 	return TileTypeDictionary::Instance().get(this->typeIdAt(point));
@@ -40,10 +38,10 @@ const TileType& Map::typeAt(const MapCoords& point) const
 void Map::set(const MapCoords& point, const TileTypeId& tileTypeId)
 {
 	MH_ASSERT(
-		(point.x < this->size_.x) && (point.y < this->size_.y) && (point.z < this->size_.z),
+		(point.x < this->size_.x) && (point.y < this->size_.y),
 		"Point out of range"
 	);
-	this->tiles_[point.x][point.y][point.z] = tileTypeId;
+	this->tiles_[point.x][point.y] = tileTypeId;
 }
 
 const MapCoords& Map::size() const

@@ -14,7 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.If not, see http://www.gnu.org/licenses/.
 
-#include <iostream>
+#include <string>
+using std::string;
 
 #include <SFML/Graphics.hpp>
 
@@ -25,32 +26,41 @@ using mh::app::Game;
 
 int main(int argc, char* argv[]) 
 {
-	if (argc < 2)
+	try
 	{
-		Logger::LogError(
-			std::string("Not enough arguments supplied. Usage: ") + argv[0] + " <path to data folder>"
-		);
-		return 1;
-	}
-
-	Logger::LogInfo("This program comes with ABSOLUTELY NO WARRANTY; see http://www.gnu.org/licenses/gpl-3.0.en.html for details.");
-	Logger::LogInfo("This is free software, and you are welcome to redistribute it under certain conditions.");
-
-	Game game(argv[1]);
-
-	sf::RenderWindow app(sf::VideoMode(800, 600), "Mountain Holds");
-	
-	Logger::LogInfo("MH initialized");
-
-	while (app.isOpen()) {
-		sf::Event event;
-		while (app.pollEvent(event))
+		if (argc < 2)
 		{
-			if (event.type == sf::Event::Closed)
-				app.close();
+			Logger::LogError(
+				string("Not enough arguments supplied. Usage: ") + argv[0] + " <path to data folder>"
+			);
+			return 1;
 		}
-		app.clear();
-		game.update(app);
-		app.display();
+
+		Logger::LogInfo("This program comes with ABSOLUTELY NO WARRANTY; see http://www.gnu.org/licenses/gpl-3.0.en.html for details.");
+		Logger::LogInfo("This is free software, and you are welcome to redistribute it under certain conditions.");
+
+		Game game(argv[1]);
+
+		sf::RenderWindow app(sf::VideoMode(800, 600), "Mountain Holds");
+
+		Logger::LogInfo("MH initialized");
+
+		while (app.isOpen()) 
+		{
+			sf::Event event;
+			while (app.pollEvent(event))
+			{
+				if (event.type == sf::Event::Closed)
+					app.close();
+			}
+			app.clear();
+			game.update(app);
+			app.display();
+		}
+	}
+	catch (const std::exception& ex)
+	{
+		Logger::LogError(string("FATAL: unhandled exception:") + ex.what());
+		return 1;
 	}
 }
