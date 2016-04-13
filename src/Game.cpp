@@ -27,8 +27,8 @@ Game::Game(const std::string& dataFolder)
 {
 	initializeScripting(dataFolder, "mh-core");
 	initializeMaps();
-	initializeRendering(dataFolder);
 	this->map_ = generateMapFromScript();
+	initializeRendering(dataFolder);
 	this->renderer_ = std::make_unique<Renderer>();
 	this->mapCenter_ = std::make_unique<MapCoords>(this->map_->size().x / 2, this->map_->size().y / 2);
 }
